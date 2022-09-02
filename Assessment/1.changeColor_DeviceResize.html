@@ -1,0 +1,68 @@
+<script>
+  const cartCTA = document.querySelectorAll("button.btn.add-to-cart");
+  const body = document.querySelector("body");
+  let items = document.querySelectorAll(".list-group-item");
+  let itemsClone = document.querySelectorAll(".list-group-item");
+
+  let listWrapper = document.querySelector(".list-group");
+  let once = 0;
+  let onceAboveWidth = 0;
+
+  window.addEventListener("resize", () => {
+    if (body.clientWidth < 400) {
+      sortItems();
+      once = 1;
+      onceAboveWidth = 0;
+    }
+    if (body.clientWidth > 400) {
+      once = 0;
+      aboveWidthTasks();
+      onceAboveWidth = 1;
+    }
+  });
+
+  //  Screen size>400
+  function aboveWidthTasks() {
+    if (onceAboveWidth === 1) return;
+    for (let i = 0; i < cartCTA.length; i++) {
+      cartCTA[i].style.backgroundColor = "#46b29d";
+    }
+
+    console.log("items", items);
+    items.forEach((pd) => {
+      listWrapper.appendChild(pd);
+    });
+  }
+
+  function sortItems() {
+    if (once === 1) return;
+
+    for (let i = 0; i < cartCTA.length; i++) {
+      cartCTA[i].style.backgroundColor = "green";
+    }
+    console.log("itemsClone", itemsClone);
+    let arr = [];
+
+    for (let i = 0; i < itemsClone.length; i++) {
+      let priceElm = itemsClone[i].querySelector("h6");
+      let temp = priceElm.innerText;
+      temp = parseInt(temp.substr(1));
+      arr.push({ price: temp, elm: itemsClone[i] });
+    }
+
+    console.log("my arr", arr);
+
+    arr.sort((a, b) => {
+      return a.price - b.price;
+    });
+
+    console.log("sorted arr", arr);
+    render(arr);
+  }
+
+  function render(arr) {
+    let elmArr = arr.forEach((item) => {
+      listWrapper.appendChild(item.elm);
+    });
+  }
+</script>
