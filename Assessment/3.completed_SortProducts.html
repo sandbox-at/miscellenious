@@ -1,0 +1,44 @@
+<script>
+  (function () {
+    const listItems = document.querySelectorAll(".list-group-item");
+    console.log(listItems); // array of elments
+
+    listItems.forEach((item, index) => {
+      let addToCartBtn = item.querySelector("button.btn.add-to-cart");
+      addToCartBtn.addEventListener("click", function () {
+        if (item.hasAttribute("clickCount")) {
+          let count = parseInt(item.getAttribute("clickCount"))+1
+          item.setAttribute("clickCount", count);
+          console.log(count, typeof count)
+
+          if (count > 5) {
+            sendToLast(index, item);
+          }
+        } else {
+          item.setAttribute("clickCount", 1);
+        }
+
+        console.dir(item);
+      });
+    });
+
+    function sendToLast(pos, listItem) {
+      let newArr = [];
+      listItems.forEach((item, index) => {
+        if (index !== pos) {
+          newArr.push(item);
+        }
+      });
+      newArr.push(listItem);
+      console.log("newArr", newArr);
+
+
+
+      let listWrapper = document.querySelector('.list-group')
+      
+      newArr.forEach((item, index)=>{
+        listWrapper.appendChild(item)
+      })
+    }
+  })();
+</script>
